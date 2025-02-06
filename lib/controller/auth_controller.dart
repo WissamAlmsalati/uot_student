@@ -7,7 +7,11 @@ class AuthController {
   final String loginUrl = 'http://192.168.1.105:8000/user/login/';
 
   Future<void> login(
-      String username, String password, BuildContext context) async {
+    String username,
+    String password,
+    BuildContext context, {
+    VoidCallback? onRetry,
+  }) async {
     final Uri url = Uri.parse(loginUrl);
 
     try {
@@ -24,7 +28,11 @@ class AuthController {
 
         if (data['access'] == null) {
           _showDialog(
-              context, 'Error', 'Access token not found in the response.');
+            context,
+            'خطأ',
+            'لم يتم العثور على رمز الدخول.',
+            onRetry: onRetry,
+          );
           return;
         }
 
@@ -35,14 +43,29 @@ class AuthController {
 
         Navigator.pushReplacementNamed(context, '/main');
       } else {
-        _showDialog(context, 'Error', 'Login failed: ${response.reasonPhrase}');
+        _showDialog(
+          context,
+          'خطأ',
+          'فشل تسجيل الدخول: ${response.reasonPhrase}',
+          onRetry: onRetry,
+        );
       }
     } catch (e) {
-      _showDialog(context, 'Exception', 'An error occurred: $e');
+      _showDialog(
+        context,
+        'استثناء',
+        'حدث خطأ: $e',
+        onRetry: onRetry,
+      );
     }
   }
 
-  void _showDialog(BuildContext context, String title, String message) {
+  void _showDialog(
+    BuildContext context,
+    String title,
+    String message, {
+    VoidCallback? onRetry,
+  }) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -52,8 +75,15 @@ class AuthController {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              if (onRetry != null) {
+                onRetry();
+              }
             },
-            child: const Text('OK'),
+            child: const Text('إعادة المحاولة'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('إلغاء'),
           ),
         ],
       ),
