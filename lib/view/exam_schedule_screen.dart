@@ -232,11 +232,9 @@ class _ExamScheduleWeekTableScreenState extends State<ExamScheduleWeekTableScree
             int day = lecture.day;
             grouped.putIfAbsent(day, () => []).add(lecture);
           }
-          // Ensure every weekday exists (even if empty)
           for (int i = 1; i <= 7; i++) {
             grouped.putIfAbsent(i, () => []);
           }
-          // Determine maximum number of rows needed
           int maxRows = grouped.values.fold<int>(
               0, (prev, list) => list.length > prev ? list.length : prev);
 

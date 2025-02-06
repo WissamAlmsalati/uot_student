@@ -28,90 +28,105 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Remove the appBar for a full-screen login, or include it if needed.
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.deepPurple.shade400, Colors.deepPurple.shade200],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.deepPurple.shade400, Colors.deepPurple.shade200],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Optional: Add a logo or icon
-                    const Icon(
-                      Icons.person,
-                      size: 80,
-                      color: Colors.deepPurple,
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'تسجيل الدخول',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Optional: Logo or icon
+                      const Icon(
+                        Icons.person,
+                        size: 80,
                         color: Colors.deepPurple,
                       ),
-                    ),
-                    const SizedBox(height: 32),
-                    // Username field
-                    TextField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        labelText: 'اسم المستخدم',
-                        prefixIcon: const Icon(Icons.person),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'تسجيل الدخول',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Password field
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'كلمة المرور',
-                        prefixIcon: const Icon(Icons.lock),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    // Login Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _handleLogin,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          shape: RoundedRectangleBorder(
+                      const SizedBox(height: 32),
+                      // Username field
+                      TextField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          labelText: 'اسم المستخدم',
+                          prefixIcon: const Icon(Icons.person),
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
-                        child: const Text(
-                          'دخول',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                      const SizedBox(height: 16),
+                      // Password field
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'كلمة المرور',
+                          prefixIcon: const Icon(Icons.lock),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      // "Forgot Password?" button (aligned left in RTL context)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          onPressed: () {
+                            
+                          },
+                          child: const Text(
+                            'نسيت كلمة المرور؟',
+                            style: TextStyle(color: Colors.deepPurple),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      // Login Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _handleLogin,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                          ),
+                          child: const Text(
+                            'تسجيل الدخول',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
