@@ -33,14 +33,13 @@ class _StudentTableScreenState extends State<StudentTableScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: const Text('تفاصيل الطالب'),
+backgroundColor: Colors.grey[100],          title:  Text('تفاصيل الطالب',style: TextStyle(color: Colors.black),),
           centerTitle: true,
-          backgroundColor: Colors.deepPurple,
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
               onPressed: _logout,
-              icon: const Icon(Icons.logout),
+              icon: const Icon(Icons.logout,color: Colors.black,),
             ),
           ],
         ),

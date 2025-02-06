@@ -1,3 +1,4 @@
+// lib/view/exam_schedule_week_table_screen.dart
 import 'package:flutter/material.dart';
 import '../controller/exam_schedule_controller.dart';
 import '../controller/lecture_schedule_controller.dart';
@@ -12,18 +13,16 @@ class ExamScheduleWeekTableScreen extends StatefulWidget {
       _ExamScheduleWeekTableScreenState();
 }
 
-class _ExamScheduleWeekTableScreenState
-    extends State<ExamScheduleWeekTableScreen> {
+class _ExamScheduleWeekTableScreenState extends State<ExamScheduleWeekTableScreen> {
   late Future<List<ExamSchedule>> _examSchedulesFuture;
   late Future<List<LectureSchedule>> _lectureSchedulesFuture;
-  final ExamScheduleController _controller = ExamScheduleController();
-  final LectureScheduleController _lectureController =
-      LectureScheduleController();
+  final ExamScheduleController _examController = ExamScheduleController();
+  final LectureScheduleController _lectureController = LectureScheduleController();
 
   @override
   void initState() {
     super.initState();
-    _examSchedulesFuture = _controller.fetchExamSchedules();
+    _examSchedulesFuture = _examController.fetchExamSchedules();
     _lectureSchedulesFuture = _lectureController.fetchLectureSchedules();
   }
 
@@ -33,11 +32,13 @@ class _ExamScheduleWeekTableScreenState
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Schedule - Weekly Table'),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: const Text('الجدول الدراسي'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Exams'),
-              Tab(text: 'Lectures'),
+              Tab(text: 'جدول الامتحانات'),
+              Tab(text: 'جدول المحاضرات'),
             ],
           ),
         ),
@@ -62,15 +63,19 @@ class _ExamScheduleWeekTableScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Error loading exam schedules:\n${snapshot.error}'),
+                Text(
+                  'خطأ في تحميل جدول الامتحانات:\n${snapshot.error}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 14),
+                ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _examSchedulesFuture = _controller.fetchExamSchedules();
+                      _examSchedulesFuture = _examController.fetchExamSchedules();
                     });
                   },
-                  child: const Text('Retry'),
+                  child: const Text('إعادة المحاولة'),
                 ),
               ],
             ),
@@ -78,7 +83,7 @@ class _ExamScheduleWeekTableScreenState
         } else if (snapshot.hasData) {
           List<ExamSchedule> schedules = snapshot.data!;
           if (schedules.isEmpty) {
-            return const Center(child: Text('No exam schedules found'));
+            return const Center(child: Text('لا يوجد امتحانات متاحة'));
           }
           // Group exam schedules by weekday (1 = Monday, ... , 7 = Sunday)
           Map<int, List<ExamSchedule>> grouped = {};
@@ -86,23 +91,23 @@ class _ExamScheduleWeekTableScreenState
             int weekday = exam.examDate.weekday;
             grouped.putIfAbsent(weekday, () => []).add(exam);
           }
-          // Ensure every weekday exists in our map (even if empty)
+          // Ensure every weekday exists (even if empty)
           for (int i = 1; i <= 7; i++) {
             grouped.putIfAbsent(i, () => []);
           }
-          // Determine maximum number of rows
+          // Determine maximum number of rows needed
           int maxRows = grouped.values.fold<int>(
               0, (prev, list) => list.length > prev ? list.length : prev);
 
-          // Define day names
+          // Define Arabic day names corresponding to weekday numbers (Monday=1)
           List<String> dayNames = [
-            'Mon',
-            'Tue',
-            'Wed',
-            'Thu',
-            'Fri',
-            'Sat',
-            'Sun'
+            'الإثنين',
+            'الثلاثاء',
+            'الأربعاء',
+            'الخميس',
+            'الجمعة',
+            'السبت',
+            'الأحد'
           ];
 
           // Build table rows
@@ -136,8 +141,7 @@ class _ExamScheduleWeekTableScreenState
                 ExamSchedule exam = exams[row];
                 cell = Card(
                   elevation: 2,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 4.0, horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Column(
@@ -146,8 +150,7 @@ class _ExamScheduleWeekTableScreenState
                         Text(
                           exam.label,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -184,7 +187,7 @@ class _ExamScheduleWeekTableScreenState
             ),
           );
         } else {
-          return const Center(child: Text('No exam schedules found'));
+          return const Center(child: Text('لا يوجد جدول امتحانات'));
         }
       },
     );
@@ -201,16 +204,19 @@ class _ExamScheduleWeekTableScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Error loading lecture schedules:\n${snapshot.error}'),
+                Text(
+                  'خطأ في تحميل جدول المحاضرات:\n${snapshot.error}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 14),
+                ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _lectureSchedulesFuture =
-                          _lectureController.fetchLectureSchedules();
+                      _lectureSchedulesFuture = _lectureController.fetchLectureSchedules();
                     });
                   },
-                  child: const Text('Retry'),
+                  child: const Text('إعادة المحاولة'),
                 ),
               ],
             ),
@@ -218,7 +224,7 @@ class _ExamScheduleWeekTableScreenState
         } else if (snapshot.hasData) {
           List<LectureSchedule> lectures = snapshot.data!;
           if (lectures.isEmpty) {
-            return const Center(child: Text('No lecture schedules found'));
+            return const Center(child: Text('لا توجد محاضرات متاحة'));
           }
           // Group lecture schedules by day (1 = Monday, ... , 7 = Sunday)
           Map<int, List<LectureSchedule>> grouped = {};
@@ -226,23 +232,23 @@ class _ExamScheduleWeekTableScreenState
             int day = lecture.day;
             grouped.putIfAbsent(day, () => []).add(lecture);
           }
-          // Ensure every weekday exists in our map (even if empty)
+          // Ensure every weekday exists (even if empty)
           for (int i = 1; i <= 7; i++) {
             grouped.putIfAbsent(i, () => []);
           }
-          // Determine maximum number of rows
+          // Determine maximum number of rows needed
           int maxRows = grouped.values.fold<int>(
               0, (prev, list) => list.length > prev ? list.length : prev);
 
-          // Define day names
+          // Define Arabic day names corresponding to weekday numbers
           List<String> dayNames = [
-            'Mon',
-            'Tue',
-            'Wed',
-            'Thu',
-            'Fri',
-            'Sat',
-            'Sun'
+            'الإثنين',
+            'الثلاثاء',
+            'الأربعاء',
+            'الخميس',
+            'الجمعة',
+            'السبت',
+            'الأحد'
           ];
 
           // Build table rows
@@ -276,8 +282,7 @@ class _ExamScheduleWeekTableScreenState
                 LectureSchedule lecture = lecturesOfDay[row];
                 cell = Card(
                   elevation: 2,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 4.0, horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Column(
@@ -286,12 +291,11 @@ class _ExamScheduleWeekTableScreenState
                         Text(
                           lecture.label,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Classroom: ${lecture.classroom}, Group: ${lecture.courseGroup}',
+                          'قاعة: ${lecture.classroom}, المجموعة: ${lecture.courseGroup}',
                           style: const TextStyle(fontSize: 10),
                         ),
                         const SizedBox(height: 4),
@@ -324,7 +328,7 @@ class _ExamScheduleWeekTableScreenState
             ),
           );
         } else {
-          return const Center(child: Text('No lecture schedules found'));
+          return const Center(child: Text('لا يوجد جدول محاضرات'));
         }
       },
     );

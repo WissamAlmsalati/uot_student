@@ -98,7 +98,9 @@ class _RegisterCourseScreenState extends State<RegisterCourseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register For a Course"),
+           automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: const Text("التسجيل في المواد"),
       ),
       body: FutureBuilder<List<Course>>(
         future: _coursesFuture,
@@ -118,7 +120,7 @@ class _RegisterCourseScreenState extends State<RegisterCourseScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Select a Course",
+                      "اختيار مادة",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -145,7 +147,7 @@ class _RegisterCourseScreenState extends State<RegisterCourseScreen> {
                           controller: _courseTextController,
                           readOnly: true,
                           decoration: const InputDecoration(
-                            labelText: "Select a course",
+                            labelText: "المادة",
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -184,7 +186,7 @@ class _RegisterCourseScreenState extends State<RegisterCourseScreen> {
                                         _selectedGroup!.group == group.group;
                                     return ListTile(
                                       title: Text(
-                                          "Group: ${group.group}   Max Seats: ${group.maxSeats}"),
+                                          "المجموعة: ${group.group}   المقاعد المتاحة: ${group.maxSeats}"),
                                       trailing: isSelected
                                           ? const Icon(Icons.check_circle,
                                               color: Colors.green)
@@ -238,9 +240,9 @@ class _RegisterCourseScreenState extends State<RegisterCourseScreen> {
                                       context: context,
                                       builder: (_) => AlertDialog(
                                         title: const Text(
-                                            "Registration Successful"),
+                                            "تم التسجيل"),
                                         content: const Text(
-                                            "Your registration was successful."),
+                                            "تم التسجيل بنجاح في المادة"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
@@ -253,18 +255,18 @@ class _RegisterCourseScreenState extends State<RegisterCourseScreen> {
                                     );
                                   }
                                 } catch (error) {
-                                  print("Registration failed: $error");
+                                  print("فشل في التسجيل $error");
                                   showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(
-                                      title: const Text("Registration Failed"),
-                                      content: Text("Error: $error"),
+                                      title: const Text("فشل التسجيل"),
+                                      content: Text("خطأ: $error"),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: const Text("OK"),
+                                          child: const Text("اغلاق"),
                                         )
                                       ],
                                     ),
@@ -285,7 +287,7 @@ class _RegisterCourseScreenState extends State<RegisterCourseScreen> {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text("Register"),
+                            : const Text("تسجيل"),
                       ),
                     ),
                   ],

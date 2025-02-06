@@ -29,6 +29,7 @@ class AuthController {
         }
 
         String accessToken = data['access'];
+        print('Access token: $accessToken');
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('access', accessToken);
 
