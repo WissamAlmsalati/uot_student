@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uot_students/services/base_url.dart';
 import '../model/exam_schedule.dart';
 
 class ExamScheduleController {
   // Replace with your proper host
-  final String apiUrl =
-      'http://192.168.1.105:8000/study-and-exams/api/exams-schedule/';
+  final String apiUrl = '${BaseUrl.baseUrl}study-and-exams/api/exams-schedule/';
 
   Future<List<ExamSchedule>> fetchExamSchedules() async {
     final prefs = await SharedPreferences.getInstance();

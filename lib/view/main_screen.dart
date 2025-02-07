@@ -31,13 +31,12 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('access');
-    Navigator.pushReplacementNamed(context, '/onboarding');
+    Navigator.pushReplacementNamed(context, '/');
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      // Prevent back navigation (e.g. swipe to go back) to the login screen.
       onWillPop: () async => false,
       child: Scaffold(
         body: _pages[_selectedIndex],

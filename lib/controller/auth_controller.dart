@@ -3,8 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'package:uot_students/services/base_url.dart';
+
 class AuthController {
-  final String loginUrl = 'http://192.168.1.105:8000/user/login/';
+  BaseUrl baseUrl = BaseUrl();
+
+  final String loginUrl = '${BaseUrl.baseUrl}user/login/';
 
   Future<void> login(
     String username,

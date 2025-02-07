@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uot_students/services/base_url.dart';
 import '../model/course_group.dart';
 
 class CourseGroupController {
   // Base URL for fetching course group by course id.
-  final String baseUrl =
-      'http://192.168.1.105:8000/study-and-exams/api/course-group/course/';
+  final String baseUrl = '${BaseUrl.baseUrl}study-and-exams/api/course-group/course/';
 
   Future<List<CourseGroup>> fetchCourseGroup(int courseId) async {
     final prefs = await SharedPreferences.getInstance();

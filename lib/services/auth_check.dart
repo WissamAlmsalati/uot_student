@@ -21,7 +21,7 @@ class _AuthCheckState extends State<AuthCheck> {
     if (access != null && access.isNotEmpty) {
       Navigator.pushReplacementNamed(context, '/main');
     } else {
-      Navigator.pushReplacementNamed(context, '/onboarding');
+      Navigator.pushReplacementNamed(context, '/');
     }
   }
 

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uot_students/services/base_url.dart';
 import '../model/lecture_schedule.dart';
 
 class LectureScheduleController {
   // Replace with your proper host if needed.
-  final String apiUrl =
-      'http://192.168.1.105:8000/study-and-exams/api/lectures-schdule/';
+  final String apiUrl = '${BaseUrl.baseUrl}study-and-exams/api/lectures-schdule/';
 
   Future<List<LectureSchedule>> fetchLectureSchedules() async {
     final prefs = await SharedPreferences.getInstance();
@@ -37,8 +37,7 @@ class LectureScheduleController {
       }
       return data.map((json) => LectureSchedule.fromJson(json)).toList();
     } else {
-      throw Exception(
-          "Failed to load lecture schedules: ${response.statusCode}");
+      throw Exception("Failed to load lecture schedules: ${response.statusCode}");
     }
   }
 }

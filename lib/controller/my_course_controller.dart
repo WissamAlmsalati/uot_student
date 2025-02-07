@@ -1,12 +1,12 @@
-// lib/controller/my_course_controller.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uot_students/services/base_url.dart';
 import '../model/mycourse_model.dart';
 
 class MyCourseController {
   // Ensure there is no extra space in the URL.
-  final String apiUrl = 'http://192.168.1.105:8000/study-and-exams/api/course-attend/';
+  final String apiUrl = '${BaseUrl.baseUrl}study-and-exams/api/course-attend/';
 
   Future<List<MyCourse>> fetchCourses() async {
     // Retrieve the access token from SharedPreferences.

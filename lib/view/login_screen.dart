@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uot_students/services/base_url.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controller/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -56,6 +58,15 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
+
+Future<void> _launchForgotPasswordUrl() async {
+  final Uri url = Uri.parse('${BaseUrl.resetPasswordUrl}/reset-password');
+  // Use external application mode to force opening in the browser.
+  if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+    throw Exception('Could not launch $url');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: TextButton(
-                            onPressed: () {
-                              // Handle forgot password action here.
-                            },
+                            onPressed: _launchForgotPasswordUrl,
                             child: const Text('نسيت كلمة المرور؟'),
                           ),
                         ),

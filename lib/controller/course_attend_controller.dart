@@ -3,11 +3,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uot_students/services/base_url.dart';
 
 class CourseAttendController {
   // Base URL for registering course attendance.
-  final String baseUrl =
-      'http://192.168.1.105:8000/study-and-exams/api/course-attend/';
+  final String baseUrl = '${BaseUrl.baseUrl}study-and-exams/api/course-attend/';
 
   Future<bool> registerCourseAttend(int courseGroupId) async {
     try {
